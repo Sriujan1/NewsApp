@@ -36,6 +36,7 @@ class _ItemPageState extends State<ItemPage> {
         child: SingleChildScrollView(
           child: ListTile(
             leading: CircleAvatar(
+              radius: 23,
               backgroundColor: Colors.grey,
               backgroundImage: NetworkImage('${widget.newsItem.imageUrl}'),
             ),
