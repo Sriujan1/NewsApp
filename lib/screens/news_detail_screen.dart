@@ -4,7 +4,6 @@ class NewsDetailScreen extends StatelessWidget {
   static const routeName = '/news_detail';
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
     final newsItem = ModalRoute.of(context).settings.arguments as Map<String, String>;
     final author = newsItem['author'];
     final description = newsItem['description'];
@@ -12,7 +11,6 @@ class NewsDetailScreen extends StatelessWidget {
     final content = newsItem['content'];
 
     return Scaffold(
-      key: _scaffoldKey,
         body: CustomScrollView(
       slivers: <Widget>[
         SliverAppBar(
@@ -53,7 +51,6 @@ class NewsDetailScreen extends StatelessWidget {
                 ),
               ),
             ),
-            // Divider(),
             SizedBox(
               height: 10,
             ),
@@ -91,8 +88,8 @@ class NewsDetailScreen extends StatelessWidget {
             Container(
                 margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                 alignment: Alignment.bottomRight,
-                child: SnackBarSaveUndo(scaffoldKey: _scaffoldKey)),
-
+                child: UndoSnackBar(),
+              ),
             SizedBox(height: 800)
           ]),
         ),
@@ -101,28 +98,27 @@ class NewsDetailScreen extends StatelessWidget {
   }
 }
 
-class SnackBarSaveUndo extends StatelessWidget {
-  const SnackBarSaveUndo({
+class UndoSnackBar extends StatelessWidget {
+  const UndoSnackBar({
     Key key,
-    @required GlobalKey<ScaffoldState> scaffoldKey,
-  }) : _scaffoldKey = scaffoldKey, super(key: key);
-
-  final GlobalKey<ScaffoldState> _scaffoldKey;
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
-      onPressed: () {
-        _scaffoldKey.currentState.showSnackBar(SnackBar(
-          content: Text('Added item to Saved!'),
-          duration: Duration(seconds: 2),
-          action: SnackBarAction(
-            label: 'UNDO',
-            onPressed: () {},
-          ),
-        ));
-      },
       child: Icon(Icons.save),
+      onPressed: () {
+        Scaffold.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Item Saved'),
+            duration: Duration(seconds: 2),
+            action: SnackBarAction(
+              label: 'UNDO',
+              onPressed: () {},
+            ),
+          ),
+        );
+      } 
     );
   }
 }
