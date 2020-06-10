@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class NewsDetailScreen extends StatelessWidget {
-  static const routeName = '/news_detail';
+  static const routeName = '/news-detail-screen';
   @override
   Widget build(BuildContext context) {
     final newsItem = ModalRoute.of(context).settings.arguments as Map<String, String>;
@@ -9,7 +11,7 @@ class NewsDetailScreen extends StatelessWidget {
     final description = newsItem['description'];
     final imageUrl = newsItem['imageUrl'];
     final content = newsItem['content'];
-
+    //final userId = getuserID();
     return Scaffold(
         body: CustomScrollView(
       slivers: <Widget>[
@@ -88,7 +90,7 @@ class NewsDetailScreen extends StatelessWidget {
             Container(
                 margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                 alignment: Alignment.bottomRight,
-                child: UndoSnackBar(),
+                child: UndoSnackBar(author: author,description: description,content: content,imageUrl: imageUrl),
               ),
             SizedBox(height: 800)
           ]),
@@ -99,26 +101,47 @@ class NewsDetailScreen extends StatelessWidget {
 }
 
 class UndoSnackBar extends StatelessWidget {
-  const UndoSnackBar({
+  UndoSnackBar({
     Key key,
+    this.author,
+    this.description,
+    this.imageUrl,
+    this.content,
   }) : super(key: key);
+  final String author;
+  final String description;
+  final String imageUrl;
+  final String content;
+  
 
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
       child: Icon(Icons.save),
-      onPressed: () {
+      onPressed: () async {
+        final FirebaseUser user = await FirebaseAuth.instance.currentUser();
+        final userID = user.uid;
+        final docref = await Firestore.instance.collection('Users').document(userID).collection('News').add({
+          'author': author,
+          'description': description,
+          'imageUrl': imageUrl,
+          'content': content,
+          'userID': userID,
+        });
+        final docId = docref.documentID;
         Scaffold.of(context).showSnackBar(
           SnackBar(
             content: Text('Item Saved'),
             duration: Duration(seconds: 2),
             action: SnackBarAction(
-              label: 'UNDO',
-              onPressed: () {},
+              label: 'UNDO', 
+              onPressed: () async{
+                await Firestore.instance.collection('Users').document(userID).collection('News').document(docId).delete();
+              },
             ),
           ),
         );
-      } 
+      }
     );
   }
 }
