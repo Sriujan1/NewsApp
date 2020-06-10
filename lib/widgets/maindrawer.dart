@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import '../pickers/user_image_picker.dart';
+import 'dart:io';
 class MainDrawer extends StatelessWidget {
 
   Widget buildListTile(String title, IconData icon, Function ontapHandler){
@@ -25,20 +26,25 @@ class MainDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+     File pickImage;
+
+void pickedImage(File pickedImage) {
+    pickImage = pickedImage;
+  }
     return Drawer(
       child: Column(
         children: <Widget>[
           Container(
-            height: 80,
+            height: 180,
             width: double.infinity,
-            padding: EdgeInsets.only(top: 30,left: 16),
+            padding: EdgeInsets.only(top: 40,left: 70),
             color: Theme.of(context).primaryColor,
             alignment: Alignment.centerLeft,
-            child: Text('Navigations', style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),),
+            child: Container(
+              child: UserImagePicker(pickedImage),
+            )
+            
+            
           ),
           SizedBox(height: 20,),
           buildListTile(
