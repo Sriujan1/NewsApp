@@ -20,17 +20,20 @@ class _AuthScreenState extends State<AuthScreen> {
     BuildContext ctx,
   ) async {
     AuthResult authResult;
-    try{
+    try {
       setState(() {
         _isLoading = true;
       });
-      if(isLogin){
-      authResult = await _auth.signInWithEmailAndPassword(email: email, password: password);
-    } else{
-      authResult = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-    }} on PlatformException catch (err){
+      if (isLogin) {
+        authResult = await _auth.signInWithEmailAndPassword(
+            email: email, password: password);
+      } else {
+        authResult = await _auth.createUserWithEmailAndPassword(
+            email: email, password: password);
+      }
+    } on PlatformException catch (err) {
       var message = 'An error occured, please check your credentials';
-      if(err.message != null){
+      if (err.message != null) {
         message = err.message;
       }
 
@@ -41,18 +44,27 @@ class _AuthScreenState extends State<AuthScreen> {
       setState(() {
         _isLoading = false;
       });
-    } catch (error){
+    } catch (error) {
       setState(() {
         _isLoading = false;
       });
       print(error);
     }
   }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
-      body: AuthForm(_submitAuthForm, _isLoading),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("assets/images/bg.jpg"), fit: BoxFit.cover)),
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          body: AuthForm(_submitAuthForm, _isLoading),
+        ),
+      ),
     );
   }
 }
