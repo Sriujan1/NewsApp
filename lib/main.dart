@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import './screens/news_list_screen.dart';
 import './screens/home_screen.dart';
 import './screens/auth_screen.dart';
+import './screens/read_late_screen.dart';
 import './models/news.dart';
 
 void main() {
@@ -41,7 +42,8 @@ class MyApp extends StatelessWidget {
           routes: {
             HomeScreen.routeName: (ctx) => HomeScreen(),
             NewsListScreen.routeName: (ctx) => NewsListScreen(),
-            NewsDetailScreen.routeName: (ctx) => NewsDetailScreen()
+            NewsDetailScreen.routeName: (ctx) => NewsDetailScreen(),
+            ReadLaterScreen.routeName: (ctx) => ReadLaterScreen(),
           }),
     );
   }

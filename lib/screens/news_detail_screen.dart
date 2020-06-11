@@ -7,11 +7,11 @@ class NewsDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final newsItem = ModalRoute.of(context).settings.arguments as Map<String, String>;
+    final title = newsItem['title'];
     final author = newsItem['author'];
     final description = newsItem['description'];
     final imageUrl = newsItem['imageUrl'];
     final content = newsItem['content'];
-    //final userId = getuserID();
     return Scaffold(
         body: CustomScrollView(
       slivers: <Widget>[
@@ -90,7 +90,7 @@ class NewsDetailScreen extends StatelessWidget {
             Container(
                 margin: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                 alignment: Alignment.bottomRight,
-                child: UndoSnackBar(author: author,description: description,content: content,imageUrl: imageUrl),
+                child: UndoSnackBar(title: title,author: author,description: description,content: content,imageUrl: imageUrl),
               ),
             SizedBox(height: 800)
           ]),
@@ -103,17 +103,18 @@ class NewsDetailScreen extends StatelessWidget {
 class UndoSnackBar extends StatelessWidget {
   UndoSnackBar({
     Key key,
+    this.title,
     this.author,
     this.description,
     this.imageUrl,
     this.content,
   }) : super(key: key);
+  final String title;
   final String author;
   final String description;
   final String imageUrl;
   final String content;
   
-
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
@@ -122,6 +123,7 @@ class UndoSnackBar extends StatelessWidget {
         final FirebaseUser user = await FirebaseAuth.instance.currentUser();
         final userID = user.uid;
         final docref = await Firestore.instance.collection('Users').document(userID).collection('News').add({
+          'title': title,
           'author': author,
           'description': description,
           'imageUrl': imageUrl,

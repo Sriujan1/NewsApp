@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:news_app/screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:news_app/screens/read_late_screen.dart';
 import '../pickers/user_image_picker.dart';
-import 'dart:io';
+
 class MainDrawer extends StatelessWidget {
 
   Widget buildListTile(String title, IconData icon, Function ontapHandler){
@@ -28,8 +31,8 @@ class MainDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
      File pickImage;
 
-void pickedImage(File pickedImage) {
-    pickImage = pickedImage;
+void pickedImage(File picked) {
+    pickImage = picked;
   }
     return Drawer(
       child: Column(
@@ -58,7 +61,9 @@ void pickedImage(File pickedImage) {
           buildListTile(
             'Read Later',
             Icons.favorite,
-            () {}
+            () {
+              Navigator.of(context).pushReplacementNamed(ReadLaterScreen.routeName);
+            }
           ),
           SizedBox(height: 20,),
           buildListTile(
