@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:news_app/pickers/user_profile.dart';
 import 'package:news_app/screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:news_app/screens/read_late_screen.dart';
@@ -44,7 +45,7 @@ void pickedImage(File picked) {
             color: Theme.of(context).primaryColor,
             alignment: Alignment.centerLeft,
             child: Container(
-              child: UserImagePicker(pickedImage),
+              child: UserProfile(),
             )
             
             
