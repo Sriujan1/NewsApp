@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class IndividualNews {
 
@@ -17,11 +19,28 @@ class IndividualNews {
 class News with ChangeNotifier {
   List<IndividualNews> _items = [];
   final String id;
+  var url = '';
 
   News({this.id});
 
   List<IndividualNews> get item {
     return [..._items];
+  }
+  
+  getUrl() async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    final userID = user.uid;
+    Firestore.instance
+      ..collection("Users")
+          .document(userID)
+          .collection("userDetails")
+          .getDocuments()
+          .then((QuerySnapshot snapshot) {
+        snapshot.documents.forEach((f) {
+          return f.data['user_image'];
+        });
+      });
+      notifyListeners();
   }
 
   Future<void> getData(String id) async {

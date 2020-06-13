@@ -6,9 +6,6 @@ import '../widgets/maindrawer.dart';
 
 class HomeScreen extends StatelessWidget {
   static const routeName = '/home';
-  // final String id;
-  // final String title;
-  // HomeScreen(this.id, this.title);
   @override
   Widget build(BuildContext context) {
     return Scaffold(

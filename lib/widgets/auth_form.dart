@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
-import '../pickers/user_image_picker.dart';
+
 class AuthForm extends StatefulWidget {
-  final void Function(String email, String password, String username,File image,
-      bool isLgin, BuildContext ctx) submitFn;
+  final void Function(String email, String password, String username,
+       bool isLgin, BuildContext ctx) submitFn;
   final bool isLoading;
 
   AuthForm(this.submitFn, this.isLoading);
@@ -17,29 +16,15 @@ class _AuthFormState extends State<AuthForm> {
   var _userEmail = '';
   var _userName = '';
   var _userPassword = '';
-  File _userImageFile;
-
-void _pickedImage(File pickedImage) {
-    _userImageFile = pickedImage;
-  }
 
   void _trySubmit() {
     final isValid = _formKey.currentState.validate();
     FocusScope.of(context).unfocus();
-    if(_userImageFile == null && !_isLogin) {
-      Scaffold.of(context).showSnackBar(SnackBar(content: Text('Please pick an image'),backgroundColor: Colors.red,));
-      return;
-    }
 
     if (isValid) {
       _formKey.currentState.save();
-      widget.submitFn(
-        _userEmail.trim(),
-        _userPassword.trim(),
-        _userName.trim(),
-        _userImageFile,
-        _isLogin,
-        context);
+      widget.submitFn(_userEmail.trim(), _userPassword.trim(), _userName.trim(),
+           _isLogin, context);
     }
   }
 
@@ -59,7 +44,6 @@ void _pickedImage(File pickedImage) {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  if(!_isLogin) UserImagePicker(_pickedImage),
                   TextFormField(
                     key: ValueKey('Email'),
                     validator: (value) {
@@ -107,7 +91,10 @@ void _pickedImage(File pickedImage) {
                   if (!widget.isLoading)
                     RaisedButton(
                         color: Theme.of(context).primaryColor,
-                        child: Text(_isLogin ? 'Login' : 'Signup',style: TextStyle(color: Colors.white),),
+                        child: Text(
+                          _isLogin ? 'Login' : 'Signup',
+                          style: TextStyle(color: Colors.white),
+                        ),
                         onPressed: _trySubmit),
                   if (!widget.isLoading)
                     FlatButton(
@@ -117,10 +104,11 @@ void _pickedImage(File pickedImage) {
                           });
                         },
                         child: Text(
-                          _isLogin
-                              ? 'Create an account'
-                              : 'I already have an account',style: TextStyle(color: Theme.of(context).primaryColor)
-                        )),
+                            _isLogin
+                                ? 'Create an account'
+                                : 'I already have an account',
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColor))),
                 ],
               ),
             ),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:news_app/widgets/maindrawer.dart';
+
+import '../widgets/maindrawer.dart';
+import './read_later_detail_screen.dart';
 
 class ReadLaterScreen extends StatefulWidget {
   static const routeName = '/readlater';
@@ -24,8 +26,8 @@ class _ReadLaterScreenState extends State<ReadLaterScreen> {
         items.add(element);
       });
     });
-    // print(items[0]['author']);
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -42,14 +44,15 @@ class _ReadLaterScreenState extends State<ReadLaterScreen> {
               child: CircularProgressIndicator(),
             );
           }
-          if(items.length == 0){
+          if (items.length == 0) {
             return Center(
               child: Text('No saved news'),
             );
           }
           return ListView.builder(
             itemCount: items.length,
-            itemBuilder: (context, index) {
+            itemBuilder: 
+            (context, index) {
               return Container(
                 padding: EdgeInsets.all(8),
                 decoration: BoxDecoration(
@@ -67,7 +70,16 @@ class _ReadLaterScreenState extends State<ReadLaterScreen> {
                     items[index]['title'],
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  onTap: () => {},
+                  onTap: () => {
+                    Navigator.of(context)
+                        .pushNamed(ReadLaterDetailScreen.routeName, arguments: {
+                      'title': items[index]['title'],
+                      'author': items[index]['author'],
+                      'description': items[index]['description'],
+                      'imageUrl': items[index]['imageUrl'],
+                      'content': items[index]['content'],
+                    })
+                  },
                 ),
               );
             },

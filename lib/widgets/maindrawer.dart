@@ -1,11 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:news_app/pickers/user_profile.dart';
 import 'package:news_app/screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:news_app/screens/read_late_screen.dart';
-import '../pickers/user_image_picker.dart';
 
 class MainDrawer extends StatelessWidget {
 
@@ -27,28 +23,22 @@ class MainDrawer extends StatelessWidget {
 
     );
   }
-
   @override
   Widget build(BuildContext context) {
-     File pickImage;
-
-void pickedImage(File picked) {
-    pickImage = picked;
-  }
+     
     return Drawer(
       child: Column(
         children: <Widget>[
           Container(
-            height: 180,
+            height: 100,
             width: double.infinity,
             padding: EdgeInsets.only(top: 40,left: 70),
             color: Theme.of(context).primaryColor,
             alignment: Alignment.centerLeft,
-            child: Container(
-              child: UserProfile(),
-            )
-            
-            
+            child: Text('Navigate', style: TextStyle(
+              color: Colors.white,
+              fontSize: 24,
+            ),),
           ),
           SizedBox(height: 20,),
           buildListTile(
